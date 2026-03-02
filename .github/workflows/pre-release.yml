@@ -33,6 +33,9 @@ jobs:
           - os: ubuntu-22.04
             features: pcap,static-libpcap
             name: linux
+          - os: macos-latest
+            features: pcap
+            name: macos
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -161,3 +164,4 @@ jobs:
             artifacts/irminsul-win-pktmon-only/irminsul-win-pktmon-only.exe
             artifacts/irminsul-win-pcap-and-pktmon/irminsul-win-pcap-and-pktmon.exe
             artifacts/irminsul-linux/irminsul-linux.tar.gz
+            artifacts/irminsul-macos/irminsul-macos.tar.gz
