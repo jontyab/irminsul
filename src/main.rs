@@ -171,7 +171,7 @@ fn main() -> eframe::Result {
         #[cfg(any(windows, unix))]
         admin::ensure_admin();
     }
-    
+
     let capture_source = if args.read_from_file {
         capture::CaptureSource::File(args.savefile_path.unwrap()) // Should be checked by clap
     } else {
