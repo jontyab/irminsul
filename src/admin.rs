@@ -78,12 +78,13 @@ pub fn ensure_admin() {
 
 #[cfg(unix)]
 pub fn ensure_admin() {
-    // We are happy if we are running as root or have CAP_NET_RAW (Linux) / /dev/bpf access (macOS)
+    // Running as root is always sufficient
     let is_root = unsafe { libc::geteuid() } == 0;
     if is_root {
         return;
     }
 
+    // On Linux, CAP_NET_RAW is sufficient
     #[cfg(target_os = "linux")]
     if caps::has_cap(None, caps::CapSet::Effective, caps::Capability::CAP_NET_RAW)
         .is_ok_and(|has_net_raw| has_net_raw)
@@ -91,6 +92,7 @@ pub fn ensure_admin() {
         return;
     }
 
+    // On macOS, /dev/bpf access is sufficient
     #[cfg(target_os = "macos")]
     if std::fs::File::open("/dev/bpf0").is_ok() {
         return;
