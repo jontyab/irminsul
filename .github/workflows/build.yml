@@ -18,9 +18,14 @@ jobs:
       matrix:
         include:
           - os: windows-latest
-            name: windows
+            name: windows-pcap
             binary: irminsul.exe
             features: "pcap"
+            check: false
+          - os: windows-latest
+            name: windows
+            binary: irminsul.exe
+            features: ""
             check: false
           - os: ubuntu-22.04
             name: linux-x86_64
@@ -51,7 +56,7 @@ jobs:
           ./configure --prefix=/usr --libdir=/usr/lib/x86_64-linux-gnu --disable-dbus
           make && sudo make install && sudo ldconfig
       - name: Setup Windows
-        if: runner.os == 'Windows'
+        if: runner.os == 'Windows' && matrix.features == 'pcap'
         run: |
           curl https://npcap.com/dist/npcap-sdk-1.15.zip -o sdk.zip
           unzip sdk.zip
