@@ -83,6 +83,12 @@ pub fn ensure_admin() {
         return;
     }
 
+    // On macOS, /dev/bpf access is sufficient for packet capture
+    #[cfg(target_os = "macos")]
+    if std::fs::File::open("/dev/bpf0").is_ok() {
+        return;
+    }
+
     show_root_required_dialog();
 }
 
